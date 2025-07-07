@@ -103,15 +103,15 @@ const startV8MAnimation = () => {
     ease: 'power2.out'
   }, '-=1.5')
   .to(sliceFinal3Ref.value, {
-    x: '100%',
-    scaleX: 1.3,
+    x: '80%',
+    scaleX: 1,
     transformOrigin: 'top right',
     duration: 1.5,
     ease: 'power2.out'
   }, '-=1.5')
   .to(sliceFinal4Ref.value, {
-    x: '280%',
-    scaleX: 1.3,
+    x: '278%',
+    scaleX: 1,
     transformOrigin: 'top left',
     duration: 1.5,
     ease: 'power2.out'
@@ -132,13 +132,13 @@ const startV8MAnimation = () => {
   }, '-=0.8')
   .to(mSlice1Ref.value, {
     opacity: 1,
-    rotation: -30,
+    rotation: -45,
     duration: 0.8,
     ease: 'power2.out'
   }, '-=0.6')
   .to(mSlice2Ref.value, {
     opacity: 1,
-    rotation: 30,
+    rotation: 45,
     duration: 0.8,
     ease: 'power2.out'
   }, '-=0.8')
@@ -152,11 +152,9 @@ const startV8MAnimation = () => {
   height: min(200px, 15vw);
   z-index: 2;
   display: flex;
-  top: calc(50% - 120px);
   align-items: flex-start;
   justify-content: center;
   scale: 2;
-  transform-origin: top top;
 }
 
 .v8m-container {
@@ -166,12 +164,8 @@ const startV8MAnimation = () => {
   width: 100%;
   height: 100%;
   outline: 1px solid blue;
-  transform-origin: center top;
-  margin-top: -4px;
+  transform-origin: top top;
 }
-
-
-
 
 /* Final 4 slices */
 .slice-final {
@@ -234,7 +228,7 @@ const startV8MAnimation = () => {
   position: absolute;
   top: 0;
   width: 100%;
-  height: 90%;
+  height: 100%;
   background-color: #19191d;
 }
 

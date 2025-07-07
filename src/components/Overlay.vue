@@ -6,10 +6,10 @@
     <div class="corner corner-bl"></div>
     <div class="corner corner-br"></div>
     
-
-    <div class="v8m-positioning-container">
-      <V8MAnimation />
+    <div class="v8m-container">
+    <V8MAnimation />
     </div>
+
     <!-- Content container below marker -->
     <div class="content-container">
       <Tagline />
@@ -39,25 +39,13 @@ import V8MAnimation from './V8MAnimation.vue'
   z-index: 1;
 }
 
-
-/* V8M positioning container - positioned exactly where preloader square ends */
-.v8m-positioning-container {
-  position: relative;
-
-  z-index: 2;
+.v8m-container {
+  top: 70px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* V8M Zone marker - positioned exactly like the letters from preloader */
-.v8m-zone {
   position: relative;
-
-  border-radius: 10px;
-  display: block;
-  z-index: 2;
+  transform-origin: top top;
 }
+
 
 /* Corner frame effect */
 .corner {
@@ -99,14 +87,7 @@ import V8MAnimation from './V8MAnimation.vue'
 
 /* Breakpoint for smaller screens */
 @media (max-width: 850px) {
-  .v8m-positioning-container {
-    top: 150px;
-    transform: translate(-50%, 0);
-  }
-  
-  .v8m-zone {
-    top: 150px !important;
-  }
+
 
   .corner-bl {
   top: 160px;

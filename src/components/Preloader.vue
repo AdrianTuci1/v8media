@@ -79,7 +79,7 @@ const startAnimation = () => {
   // Step 3: Square becomes black and scales up while moving to top
   .to(squareContainerRef.value, {
     scale: 2,
-    y: -(window.innerHeight / 2 - 120),
+    y: -(window.innerHeight / 2 - 200),
     duration: 1.2,
     transformOrigin: 'top center',
     ease: 'power2.inOut'
