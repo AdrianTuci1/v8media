@@ -21,6 +21,7 @@
       
       <!-- Right column: Services -->
       <div class="services-text">
+        <p>branding</p>
         <p>web development</p>
         <p>marketing</p>
         <p>conversational ai</p>

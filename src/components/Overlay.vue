@@ -7,13 +7,9 @@
     <div class="corner corner-br"></div>
     
 
-    <!-- Marked area where V8M letters are positioned -->
-    <div 
-      class="v8m-zone" 
-      :style="zoneStyle"
-    >
+    <div class="v8m-positioning-container">
+      <V8MAnimation />
     </div>
-    
     <!-- Content container below marker -->
     <div class="content-container">
       <Tagline />
@@ -22,68 +18,45 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import Tagline from './Tagline.vue'
+import V8MAnimation from './V8MAnimation.vue'
 
-const props = defineProps({
-  lettersPosition: {
-    type: Object,
-    default: null
-  }
-})
 
-const zoneStyle = computed(() => {
-  console.log('Letters position:', props.lettersPosition)
-  
-  if (props.lettersPosition) {
-    return {
-      top: `${props.lettersPosition.top}px`,
-      left: `${props.lettersPosition.left}px`,
-      transform: 'scale(2)',
-      transformOrigin: 'center center',
-      width: `${props.lettersPosition.width}px`,
-      height: `${props.lettersPosition.height}px`,
-      position: 'fixed',
-      zIndex: 9998
-    }
-  }
-  
-  // Fallback position
-  return {
-    top: '200px',
-    left: '50px',
-    transform: 'scale(2)',
-    transformOrigin: 'center center',
-    width: '90%',
-    height: '160px',
-    position: 'fixed',
-    zIndex: 9998
-  }
-})
+
 </script>
 
 <style scoped>
 .overlay {
-  position: fixed;
+  position: relative;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   background: rgba(250, 249, 246, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 9998;
+  z-index: 1;
 }
 
 
+/* V8M positioning container - positioned exactly where preloader square ends */
+.v8m-positioning-container {
+  position: relative;
+
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* V8M Zone marker - positioned exactly like the letters from preloader */
 .v8m-zone {
-  position: fixed;
+  position: relative;
 
   border-radius: 10px;
   display: block;
-  z-index: 9997;
+  z-index: 2;
 }
 
 /* Corner frame effect */
@@ -126,6 +99,11 @@ const zoneStyle = computed(() => {
 
 /* Breakpoint for smaller screens */
 @media (max-width: 850px) {
+  .v8m-positioning-container {
+    top: 150px;
+    transform: translate(-50%, 0);
+  }
+  
   .v8m-zone {
     top: 150px !important;
   }

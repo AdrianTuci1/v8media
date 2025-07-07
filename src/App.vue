@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import Preloader from './components/Preloader.vue'
 import Overlay from './components/Overlay.vue'
+import DesignProcess from './components/DesignProcess.vue'
 
 const showOverlay = ref(true) // Force show for debugging
 const lettersPosition = ref(null)
@@ -17,20 +18,25 @@ const handleLettersPosition = (position) => {
 </script>
 
 <template>
-  <div>
+  <div class="app">
     <Preloader 
       @animation-complete="handleAnimationComplete" 
       @letters-position="handleLettersPosition" 
     />
-    <Overlay v-if="showOverlay" :letters-position="lettersPosition" />
+      <Overlay v-if="showOverlay" :letters-position="lettersPosition" />
+      <DesignProcess />
   </div>
 </template>
 
 <style scoped>
-.main-content {
+.app {
   margin: 0;
 }
 
-
+.main-content {
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
 
 </style>
