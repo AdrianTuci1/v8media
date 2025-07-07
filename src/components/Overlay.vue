@@ -6,11 +6,7 @@
     <div class="corner corner-bl"></div>
     <div class="corner corner-br"></div>
     
-    <div class="v8m-container">
-    <V8MAnimation />
-    </div>
-
-    <!-- Content container below marker -->
+    <!-- Content container -->
     <div class="content-container">
       <Tagline />
     </div>
@@ -19,15 +15,12 @@
 
 <script setup>
 import Tagline from './Tagline.vue'
-import V8MAnimation from './V8MAnimation.vue'
-
-
-
 </script>
 
 <style scoped>
 .overlay {
-  position: relative;
+  position: sticky;
+  top: 0;
   left: 0;
   width: 100%;
   min-height: 100vh;
@@ -36,15 +29,10 @@ import V8MAnimation from './V8MAnimation.vue'
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  z-index: 5;
 }
 
-.v8m-container {
-  top: 70px;
-  display: flex;
-  position: relative;
-  transform-origin: top top;
-}
+
 
 
 /* Corner frame effect */
