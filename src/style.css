@@ -12,6 +12,11 @@ html, body {
   height: 100%;
 }
 
+/* Enable smooth scrolling for the entire app */
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -19,6 +24,29 @@ html, body {
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
+
+  --color-black: #19191d;
+  --color-white: rgba(250, 249, 246, 1);
+  --color-red: #ff0000;
+  --color-accent: #1941f3;
+  --color-gray-dark: #333;
+  --color-gray-medium: #999;
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 3rem;
+  --spacing-xl: 4rem;
+  
+  /* Typography */
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+  --font-size-4xl: 3rem;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

@@ -1,32 +1,41 @@
 <script setup>
 import { ref } from 'vue'
-import Preloader from './components/Preloader/Preloader.vue'
-import Overlay from './components/Overlay.vue'
-import DesignProcess from './components/DesignProcess.vue'
+import PreloaderOverlayGroup from './components/PreloaderOverlayGroup.vue'
+import Showcase from './components/Showcase/Showcase.vue'
+import ClientTypes from './components/ClientTypes/ClientTypes.vue'
+import Navbar from './components/Navbar.vue'
 
-const lettersPosition = ref(null)
+const groupAnimationComplete = ref(false)
 
-const handleAnimationComplete = () => {
-  // Animation complete - overlay is already visible
-}
-
-const handleLettersPosition = (position) => {
-  console.log('Received letters position:', position)
-  lettersPosition.value = position
+const handleGroupAnimationComplete = () => {
+  console.log('Group animation complete - can now scroll down')
+  groupAnimationComplete.value = true
 }
 </script>
 
 <template>
   <div class="app">
-    <div class="main-content">
-      <Overlay :letters-position="lettersPosition" />
-      <div class="scroll-spacer"></div>
-      <DesignProcess />
+    <!-- Navbar -->
+    <Navbar v-if="groupAnimationComplete" />
+    
+    <!-- First section with preloader/overlay group -->
+    <div class="first-section">
+      <PreloaderOverlayGroup 
+        :class="{ 'frame-mode': groupAnimationComplete }"
+        @group-animation-complete="handleGroupAnimationComplete" 
+      />
     </div>
-    <Preloader 
-      @animation-complete="handleAnimationComplete" 
-      @letters-position="handleLettersPosition" 
-    />
+    
+    <!-- Main Content (becomes scrollable after animation) -->
+    <div class="main-content">
+      <!-- Showcase -->
+      <Showcase />
+      
+      <!-- Client Types -->
+      <ClientTypes />
+
+    </div>
+    
   </div>
 </template>
 
@@ -36,27 +45,30 @@ const handleLettersPosition = (position) => {
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
+  background-color: var(--color-white);
+}
+
+.first-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .main-content {
   margin: 0;
   position: relative;
   z-index: 1;
+  min-height: 100vh;
 }
 
 .scroll-spacer {
-  height: 200vh; /* Reduced since V8M is now in preloader */
-  position: relative;
+  height: 100vh;
+  background-color: #19191d;
 }
 
-/* Ensure preloader appears above overlay */
-:deep(.preloader) {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: 10;
-  pointer-events: auto;
+/* Ensure the frame doesn't interfere with scrolling */
+:deep(.preloader-overlay-group.frame-mode) {
+  pointer-events: none;
 }
 </style>

@@ -1,9 +1,5 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger)
 
 export function usePreloaderAnimation(emit) {
   const preloaderRef = ref(null)
@@ -32,8 +28,8 @@ export function usePreloaderAnimation(emit) {
   const startAnimation = () => {
     const tl = gsap.timeline({
       onComplete: () => {
-        // After preloader animation completes, setup scroll triggers
-        setupScrollTriggers()
+        // After preloader animation completes, emit completion
+        // Scroll triggers will be handled by the group animation
         emit('animationComplete')
       }
     })
@@ -237,108 +233,22 @@ export function usePreloaderAnimation(emit) {
   }
 
   const setupScrollTriggers = () => {
-    // Create a timeline for the scroll-based animation
-    const scrollTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.main-content',
-        start: 'top top',
-        end: '+=75%',
-        scrub: 1,
-        pin: '.overlay', // Pin the overlay in place during scroll
-        onUpdate: (self) => {
-          const progress = self.progress
-          console.log('Scroll progress:', progress)
-        }
-      }
-    })
-
-    // Phase 1: Keep V8M steady (0-30% scroll) - no animation needed
-
-    // Phase 2: Retract V slice first (30-40% scroll)
-    scrollTl.to(vSliceRef.value, {
-      opacity: 0,
-      rotation: 0,
-      duration: 0.2,
-      ease: 'power2.in'
-    }, 0.3)
-
-    // Phase 3: Retract circles inside 8 (40-50% scroll)
-    .to([eightSquare1Ref.value, eightSquare2Ref.value], {
-      opacity: 0,
-      scale: 0,
-      duration: 0.2,
-      ease: 'power2.in'
-    }, 0.4)
-
-    // Phase 4: Retract rotated lines from letter M (50-60% scroll)
-    .to([mSlice1Ref.value, mSlice2Ref.value], {
-      opacity: 0,
-      rotation: 0,
-      duration: 0.2,
-      ease: 'power2.in'
-    }, 0.5)
-
-    // Phase 5: Adjust X positions to move back to rectangle position (60-70% scroll)
-    .to(sliceFinal1Ref.value, {
-      x: 0,
-      scaleX: 1,
-      duration: 0.3,
-      ease: 'power2.inOut'
-    }, 0.6)
-    .to(sliceFinal2Ref.value, {
-      x: 0,
-      scaleX: 1,
-      duration: 0.3,
-      ease: 'power2.inOut'
-    }, 0.6)
-    .to(sliceFinal3Ref.value, {
-      x: 0,
-      scaleX: 1,
-      duration: 0.3,
-      ease: 'power2.inOut'
-    }, 0.6)
-    .to(sliceFinal4Ref.value, {
-      x: 0,
-      scaleX: 1,
-      duration: 0.3,
-      ease: 'power2.inOut'
-    }, 0.6)
-
-    // Phase 6: Rectangle gets back height from 60% to 100% and moves from top to center (70-80% scroll)
-    .to(firstAnimationWrapperRef.value, {
-      height: '100%',
-      y: 0,
-      duration: 0.4,
-      ease: 'power2.inOut',
-      transformOrigin: 'center center'
-    }, 0.7)
-
-    // Phase 7: Rotate 45 degrees and scale up (80-90% scroll)
-    .to(firstAnimationWrapperRef.value, {
-      rotation: 45,
-      scale: 3,
-      duration: 0.3,
-      ease: 'power2.out',
-      transformOrigin: 'center center'
-    }, 0.8)
-
-    // Phase 8: Move rectangle to center and zoom inside to reveal next section (90-100% scroll)
-    .to(squareContainerRef.value, {
-      y: '50vh',
-      scale: 15,
-      duration: 0.5,
-      ease: 'power2.in',
-      transformOrigin: 'center center',
-      onComplete: () => {
-        emit('animationComplete')
-      }
-    }, 0.9)
+    // No scroll-based reversing animation needed
+    // V8M will remain in its final state
   }
 
   const cleanup = () => {
-    // Clean up ScrollTrigger instances
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    // Remove resize listener
+    window.removeEventListener('resize', handleResize)
   }
+
+  const handleResize = () => {
+    // No scroll-based animation to recalculate
+    // V8M animation remains in its final state
+  }
+
+  // Add resize listener
+  window.addEventListener('resize', handleResize)
 
   return {
     // Refs

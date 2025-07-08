@@ -1,10 +1,18 @@
 <template>
   <div class="overlay">
-    
-    <div class="corner corner-tl"></div>
-    <div class="corner corner-tr"></div>
-    <div class="corner corner-bl"></div>
-    <div class="corner corner-br"></div>
+    <!-- Corner Stars -->
+    <div class="corner-star top-left">
+      <Star :filled="true" />
+    </div>
+    <div class="corner-star top-right">
+      <Star :filled="true" />
+    </div>
+    <div class="corner-star bottom-left">
+      <Star :filled="true" />
+    </div>
+    <div class="corner-star bottom-right">
+      <Star :filled="true" />
+    </div>
     
     <!-- Content container -->
     <div class="content-container">
@@ -15,6 +23,7 @@
 
 <script setup>
 import Tagline from './Tagline.vue'
+import Star from './Star.vue'
 </script>
 
 <style scoped>
@@ -32,62 +41,33 @@ import Tagline from './Tagline.vue'
   z-index: 5;
 }
 
-
-
-
-/* Corner frame effect */
-.corner {
+/* Corner Stars */
+.corner-star {
   position: absolute;
-  width: 30px;
-  height: 30px;
-  z-index: 9999;
+  z-index: 6;
 }
 
-.corner-tl {
-  top: 20px;
-  left: 10px;
-  border-top: 3px solid red;
-  border-left: 3px solid red;
+.corner-star.top-left {
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
 }
 
-.corner-tr {
-  top: 20px;
-  right: 10px;
-  border-top: 3px solid red;
-  border-right: 3px solid red;
+.corner-star.top-right {
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
 }
 
-.corner-bl {
-  top: 320px;
-  left: 10px;
-  border-bottom: 3px solid red;
-  border-left: 3px solid red;
+.corner-star.bottom-left {
+  bottom: var(--spacing-lg);
+  left: var(--spacing-lg);
 }
 
-.corner-br {
-  top: 320px;
-  right: 10px;
-  border-bottom: 3px solid red;
-  border-right: 3px solid red;
+.corner-star.bottom-right {
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
 }
 
 
-
-/* Breakpoint for smaller screens */
-@media (max-width: 850px) {
-
-
-  .corner-bl {
-  top: 160px;
-  left: 10px;
-}
-
-.corner-br {
-  top: 160px;
-  right: 10px;
-}
-
-}
 
 
 /* Content container */

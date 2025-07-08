@@ -1,0 +1,175 @@
+.showcase {
+  background-color: var(--color-white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.showcase-title {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  margin-bottom: 80px;
+  text-align: left;
+  letter-spacing: -0.02em;
+}
+
+.showcase-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.showcase-card {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  position: relative;
+  min-height: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  aspect-ratio: 1/1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.showcase-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* Add fade overlay for better text readability */
+.card-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 25%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.3) 75%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+.showcase-card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+.card-handle {
+  position: relative;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 40px;
+  background-color: var(--color-black);
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.card-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  padding: 10px 5px;
+  border-radius: 12px 12px 0 0;
+}
+
+.card-description {
+  font-size: 1rem;
+  color: #e9ecef;
+  line-height: 1.6;
+  margin: 0;
+  font-weight: 300;
+  padding: 10px 5px;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Tablet and Desktop - 2x2 Grid */
+@media (min-width: 768px) {
+  .showcase-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px;
+  }
+  
+  .showcase-title {
+    font-size: 4rem;
+    margin-bottom: 100px;
+  }
+  
+  .card-content {
+    padding: 70px 50px 50px;
+  }
+  
+  .card-title {
+    font-size: 1.75rem;
+  }
+  
+  .card-description {
+    font-size: 1.1rem;
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+  
+  .showcase-title {
+    font-size: 1.5rem;
+    margin-bottom: 60px;
+  }
+  
+  .showcase-grid {
+    gap: 10px;
+  }
+  
+  .card-content {
+    padding: 40px 30px 20px;
+  }
+  
+  .card-title {
+    font-size: 2rem;
+  }
+  
+  .card-description {
+    font-size: 1.2rem;
+  }
+} 
