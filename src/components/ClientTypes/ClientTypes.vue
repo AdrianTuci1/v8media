@@ -50,7 +50,7 @@ const services = ref([
 
 <style scoped>
 .services {
-  padding: 80px 40px;
+  padding: 80px 10px;
   background: var(--color-white);
   color: #1a1a1e;
   margin-block: 15%;
