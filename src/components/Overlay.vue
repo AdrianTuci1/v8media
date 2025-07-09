@@ -1,22 +1,14 @@
 <template>
   <div class="overlay">
     <!-- Corner Stars -->
-    <div class="corner-star top-left">
-      <Star :filled="true" />
-    </div>
-    <div class="corner-star top-right">
-      <Star :filled="true" />
-    </div>
-    <div class="corner-star bottom-left">
-      <Star :filled="true" />
-    </div>
-    <div class="corner-star bottom-right">
-      <Star :filled="true" />
-    </div>
-    
     <!-- Content container -->
     <div class="content-container">
       <Tagline />
+      
+      <!-- Arrow line -->
+      <div class="arrow-line">
+        <Arrow :filled="false" />
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +16,7 @@
 <script setup>
 import Tagline from './Tagline.vue'
 import Star from './Star.vue'
+import Arrow from './Arrow.vue'
 </script>
 
 <style scoped>
@@ -77,6 +70,18 @@ import Star from './Star.vue'
   align-items: center;
   gap: 1rem;
   margin-top: 2rem;
+}
+
+/* Arrow line */
+.arrow-line {
+  position: absolute;
+  bottom: 40px;
+
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  align-items: center;
 }
 
 

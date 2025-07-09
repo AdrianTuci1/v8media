@@ -100,6 +100,19 @@ const services = ref([
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Add fade overlay for better text readability */
@@ -124,6 +137,7 @@ const services = ref([
 
 .service-card:hover .service-image img {
   transform: scale(1.05);
+  animation: none;
 }
 
 .service-content {

@@ -149,14 +149,14 @@ export function usePreloaderAnimation(emit) {
     }, '-=1.5')
     .to(eightSquare1Ref.value, {
       x: '-25%',
-      scaleX: 1.8,
+      scaleX: 1,
       transformOrigin: 'center center',
       duration: 1.5,
       ease: 'power2.out'
     }, '-=1.5')
     .to(eightSquare2Ref.value, {
       x: '-25%',
-      scaleX: 1.8,
+      scaleX: 1.0,
       transformOrigin: 'center center',
       duration: 1.5,
       ease: 'power2.out'

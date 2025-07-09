@@ -8,7 +8,6 @@
       
       <!-- Right side elements -->
       <div class="navbar-right">
-        <button class="become-client-btn">+ Become a client</button>
         <div class="language-selector">
           <button 
             class="language-btn current-language"
@@ -28,6 +27,7 @@
             </button>
           </div>
         </div>
+        <button class="become-client-btn">+ Become a client</button>
       </div>
     </div>
   </nav>
@@ -79,7 +79,7 @@ const toggleLanguageDropdown = () => {
 .logo-text {
   font-size: var(--font-size-2xl);
   font-weight: 600;
-  color: var(--color-white);
+  color: var(--color-black);
   letter-spacing: 0.05em;
 }
 
@@ -96,7 +96,7 @@ const toggleLanguageDropdown = () => {
   font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: 10px 20px;
   transition: opacity 0.3s ease;
   font-family: inherit;
   background-color: var(--color-accent);
@@ -112,6 +112,10 @@ const toggleLanguageDropdown = () => {
   display: flex;
   align-items: center;
   background-color: var(--color-black);
+  border-radius: 4px;
+  min-width: 60px;
+  min-height: 36px;
+  border-radius: 14px;
 }
 
 .language-btn {
@@ -125,6 +129,11 @@ const toggleLanguageDropdown = () => {
   transition: all 0.3s ease;
   font-family: inherit;
   border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .language-btn:hover {
@@ -138,13 +147,19 @@ const toggleLanguageDropdown = () => {
 .language-dropdown {
   position: absolute;
   top: 100%;
+  left: 0;
   right: 0;
-  background-color: rgba(25, 25, 29, 0.95);
+  background-color: var(--color-black);
   border-radius: 4px;
   padding: var(--spacing-xs);
   margin-top: var(--spacing-xs);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 60px;
+  min-height: 36px;
 }
 
 .language-option {
@@ -159,7 +174,7 @@ const toggleLanguageDropdown = () => {
   font-family: inherit;
   border-radius: 4px;
   width: 100%;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
 }
 

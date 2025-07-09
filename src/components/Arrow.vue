@@ -5,10 +5,8 @@
       <div class="arrow-box" :class="{ 'filled': filled }"></div>
     </div>
     
-    <!-- Row 2: 3 boxes -->
+    <!-- Row 2: 1 box (arrow tip) -->
     <div class="arrow-row row-2">
-      <div class="arrow-box" :class="{ 'filled': filled }"></div>
-      <div class="arrow-box" :class="{ 'filled': filled }"></div>
       <div class="arrow-box" :class="{ 'filled': filled }"></div>
     </div>
     
@@ -50,8 +48,8 @@ defineProps({
   flex-direction: column;
   align-items: center;
   gap: 1px;
-  width: 25px;
-  height: 25px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -85,7 +83,7 @@ defineProps({
   width: 3px;
   height: 3px;
   background-color: var(--color-gray-medium);
-  border-radius: 1px;
+  border-radius: 2px;
   transition: all 0.3s ease;
 }
 

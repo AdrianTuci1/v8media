@@ -288,6 +288,8 @@ onUnmounted(() => {
   justify-content: center;
 }
 
+
+
 /* Left column: Main tagline */
 .tagline-main {
   text-align: right;

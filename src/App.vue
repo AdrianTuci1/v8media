@@ -1,16 +1,13 @@
 <script setup>
 import { ref } from 'vue'
-import PreloaderOverlayGroup from './components/PreloaderOverlayGroup.vue'
+import NewHero from './components/NewHero/NewHero.vue'
 import Showcase from './components/Showcase/Showcase.vue'
 import ClientTypes from './components/ClientTypes/ClientTypes.vue'
+import Testimonials from './components/Testimonials/Testimonials.vue'
 import Navbar from './components/Navbar.vue'
+import Footer from './components/Footer.vue'
 
-const groupAnimationComplete = ref(false)
-
-const handleGroupAnimationComplete = () => {
-  console.log('Group animation complete - can now scroll down')
-  groupAnimationComplete.value = true
-}
+const groupAnimationComplete = ref(true)
 </script>
 
 <template>
@@ -18,23 +15,24 @@ const handleGroupAnimationComplete = () => {
     <!-- Navbar -->
     <Navbar v-if="groupAnimationComplete" />
     
-    <!-- First section with preloader/overlay group -->
-    <div class="first-section">
-      <PreloaderOverlayGroup 
-        :class="{ 'frame-mode': groupAnimationComplete }"
-        @group-animation-complete="handleGroupAnimationComplete" 
-      />
-    </div>
+    <!-- Hero Section -->
+    <NewHero />
     
-    <!-- Main Content (becomes scrollable after animation) -->
+    <!-- Main Content -->
     <div class="main-content">
       <!-- Showcase -->
       <Showcase />
       
       <!-- Client Types -->
       <ClientTypes />
+      
+      <!-- Testimonials -->
+      <Testimonials />
 
     </div>
+    
+    <!-- Footer -->
+    <Footer />
     
   </div>
 </template>
@@ -48,23 +46,11 @@ const handleGroupAnimationComplete = () => {
   background-color: var(--color-white);
 }
 
-.first-section {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
 .main-content {
   margin: 0;
   position: relative;
   z-index: 1;
   min-height: 100vh;
-}
-
-.scroll-spacer {
-  height: 100vh;
-  background-color: #19191d;
 }
 
 /* Ensure the frame doesn't interfere with scrolling */
