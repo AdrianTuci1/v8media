@@ -6,6 +6,8 @@ import ClientTypes from './components/ClientTypes/ClientTypes.vue'
 import Testimonials from './components/Testimonials/Testimonials.vue'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
+import AboutUs from './components/AboutUs/AboutUs.vue'
+import OurServices from './components/OurServices/OurServices.vue'
 
 const groupAnimationComplete = ref(true)
 </script>
@@ -17,22 +19,24 @@ const groupAnimationComplete = ref(true)
     
     <!-- Hero Section -->
     <NewHero />
+
+    <AboutUs />
+
     
     <!-- Main Content -->
     <div class="main-content">
+      <OurServices v-if="groupAnimationComplete"/>
       <!-- Showcase -->
       <Showcase />
-      
-      <!-- Client Types -->
-      <ClientTypes />
-      
+
+
       <!-- Testimonials -->
       <Testimonials />
 
     </div>
     
     <!-- Footer -->
-    <Footer />
+    <Footer v-if="groupAnimationComplete" />
     
   </div>
 </template>

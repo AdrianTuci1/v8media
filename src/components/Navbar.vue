@@ -3,11 +3,12 @@
     <div class="navbar-container">
       <!-- Logo -->
       <div class="logo">
-        <span class="logo-text">V8M</span>
+        <img src="/logo.jpg" alt="V8M" class="logo-image">
       </div>
       
       <!-- Right side elements -->
       <div class="navbar-right">
+        <button class="become-client-btn">+ Become a client</button>
         <div class="language-selector">
           <button 
             class="language-btn current-language"
@@ -27,7 +28,6 @@
             </button>
           </div>
         </div>
-        <button class="become-client-btn">+ Become a client</button>
       </div>
     </div>
   </nav>
@@ -74,6 +74,16 @@ const toggleLanguageDropdown = () => {
 .logo {
   display: flex;
   align-items: center;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .logo-text {
@@ -111,7 +121,7 @@ const toggleLanguageDropdown = () => {
   position: relative;
   display: flex;
   align-items: center;
-  background-color: var(--color-black);
+  outline: 2px solid white;
   border-radius: 4px;
   min-width: 60px;
   min-height: 36px;
@@ -149,7 +159,7 @@ const toggleLanguageDropdown = () => {
   top: 100%;
   left: 0;
   right: 0;
-  background-color: var(--color-black);
+  background-color: var(--color-white);
   border-radius: 4px;
   padding: var(--spacing-xs);
   margin-top: var(--spacing-xs);
@@ -165,22 +175,20 @@ const toggleLanguageDropdown = () => {
 .language-option {
   background: none;
   border: none;
-  color: var(--color-white);
+  color: var(--color-black);
   font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: 5px 10px;
   transition: all 0.3s ease;
   font-family: inherit;
-  border-radius: 4px;
+  border-radius: 14px;
   width: 100%;
-  text-align: center;
+  text-align: left;
   white-space: nowrap;
 }
 
-.language-option:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
+
 
 /* Responsive design */
 @media (max-width: 768px) {
