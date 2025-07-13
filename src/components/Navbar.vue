@@ -8,7 +8,7 @@
       
       <!-- Right side elements -->
       <div class="navbar-right">
-        <button class="become-client-btn"><span>+ Become a client</span></button>
+        <button class="become-client-btn" @click="openContactForm"><span>+ Become a client</span></button>
         <div class="language-selector">
           <button 
             class="language-btn current-language"
@@ -31,14 +31,22 @@
       </div>
     </div>
   </nav>
+  
+  <!-- Contact Form Drawer -->
+  <ContactForm 
+    :isOpen="isContactFormOpen" 
+    @close="closeContactForm" 
+  />
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import ContactForm from './ContactForm.vue'
 
 const currentLanguage = ref('EN')
 const isLanguageDropdownOpen = ref(false)
 const isScrolled = ref(false)
+const isContactFormOpen = ref(false)
 
 const switchLanguage = (lang) => {
   currentLanguage.value = lang
@@ -49,6 +57,14 @@ const switchLanguage = (lang) => {
 
 const toggleLanguageDropdown = () => {
   isLanguageDropdownOpen.value = !isLanguageDropdownOpen.value
+}
+
+const openContactForm = () => {
+  isContactFormOpen.value = true
+}
+
+const closeContactForm = () => {
+  isContactFormOpen.value = false
 }
 
 const handleScroll = () => {

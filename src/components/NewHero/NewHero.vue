@@ -177,7 +177,7 @@
   background-color: transparent;
   color: var(--color-white);
   border: none;
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-md) 0;
   font-size: 2.4rem;
   font-weight: 600;
   cursor: pointer;
