@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar">
+  <nav class="navbar" :class="{ 'scrolled': isScrolled }">
     <div class="navbar-container">
       <!-- Logo -->
       <div class="logo">
@@ -8,7 +8,7 @@
       
       <!-- Right side elements -->
       <div class="navbar-right">
-        <button class="become-client-btn">+ Become a client</button>
+        <button class="become-client-btn"><span>+ Become a client</span></button>
         <div class="language-selector">
           <button 
             class="language-btn current-language"
@@ -34,10 +34,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const currentLanguage = ref('EN')
 const isLanguageDropdownOpen = ref(false)
+const isScrolled = ref(false)
 
 const switchLanguage = (lang) => {
   currentLanguage.value = lang
@@ -49,6 +50,18 @@ const switchLanguage = (lang) => {
 const toggleLanguageDropdown = () => {
   isLanguageDropdownOpen.value = !isLanguageDropdownOpen.value
 }
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 50
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <style scoped>
@@ -57,10 +70,13 @@ const toggleLanguageDropdown = () => {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 1000;
   background-color: transparent;
   padding: var(--spacing-sm) var(--spacing-md);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(0px);
 }
+
 
 .navbar-container {
   display: flex;
@@ -100,21 +116,58 @@ const toggleLanguageDropdown = () => {
 }
 
 .become-client-btn {
-  background: none;
+  background: var(--color-white);
   border: none;
-  color: var(--color-white);
+  color: var(--color-black);
   font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
   padding: 10px 20px;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
   font-family: inherit;
-  background-color: var(--color-accent);
-  border-radius: 14px;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
 }
 
-.become-client-btn:hover {
-  opacity: 0.8;
+.become-client-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--color-accent);
+  transition: left 0.3s ease;
+  z-index: 1;
+}
+
+.become-client-btn span {
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.become-client-btn:hover::before {
+  left: 0;
+}
+
+.become-client-btn:hover span {
+  color: var(--color-white);
+}
+
+/* After 100vh (scrolled state) */
+.navbar.scrolled .become-client-btn {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.navbar.scrolled .become-client-btn::before {
+  display: none;
+}
+
+.navbar.scrolled .become-client-btn:hover span {
+  transform: translateY(2px);
 }
 
 .language-selector {
@@ -126,7 +179,18 @@ const toggleLanguageDropdown = () => {
   min-width: 60px;
   min-height: 36px;
   border-radius: 14px;
+  transition: all 0.3s ease;
 }
+
+/* After 100vh (scrolled state) */
+.navbar.scrolled .language-selector {
+  outline: 2px solid var(--color-accent);
+}
+
+.navbar.scrolled .language-btn {
+  color: var(--color-accent);
+}
+
 
 .language-btn {
   background: none;

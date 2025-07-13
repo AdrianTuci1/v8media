@@ -100,6 +100,7 @@ const previousTestimonial = () => {
   padding: 120px 20px;
   background: var(--color-white);
   color: var(--color-black);
+  margin-top: 100px;
 }
 
 .container {

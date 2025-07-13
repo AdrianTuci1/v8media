@@ -1,5 +1,5 @@
 <template>
-  <section class="hero">
+  <section class="hero" ref="heroRef">
 
     <!-- Background Video -->
     <video class="hero-background-video" autoplay muted loop playsinline preload="auto">
@@ -10,9 +10,9 @@
     <div class="hero-container">
       <!-- Left Column -->
       <div class="hero-left">
-        <h1 class="hero-title">Speed up <br/> your digital <br/>footprint.</h1>
+        <h1 class="hero-title" ref="heroTitle">Speed up <br/> your digital <br/>footprint.</h1>
         
-        <div class="results-grid">
+        <div class="results-grid" ref="resultsGrid">
           <div class="result-item">
             <div class="result-number">+3</div>
             <span class="result-label">years of experience</span>
@@ -27,10 +27,10 @@
 
       <!-- Right Column -->
       <div class="hero-right">
-        <div class="hero-content">
-          <p class="hero-motto">We empower your business with cutting-edge web design and marketing solutions that deliver exceptional results.</p>
+        <div class="hero-content" ref="heroContent">
+          <p class="hero-motto" ref="heroMotto">We empower your business with cutting-edge web design and marketing solutions that deliver exceptional results.</p>
           <div class="button-arrow-group">
-            <button class="hero-button">
+            <button class="hero-button" ref="heroButton">
               Let's talk
               <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -174,11 +174,11 @@
 }
 
 .hero-button {
-  background-color: var(--color-white);
-  color: var(--color-black);
+  background-color: transparent;
+  color: var(--color-white);
   border: none;
   padding: var(--spacing-md) var(--spacing-lg);
-  font-size: var(--font-size-lg);
+  font-size: 2.4rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -187,11 +187,15 @@
   align-items: center;
   gap: var(--spacing-sm);
   border-radius: 24px;
+  text-decoration: none;
 }
 
 .hero-button:hover {
-  background-color: rgba(255, 255, 255, 0.9);
-  transform: translateY(-2px);
+  text-decoration: underline;
+}
+
+.hero-button:hover .arrow-icon {
+  transform: rotate(-45deg) translateX(3px);
 }
 
 .button-arrow-group {
@@ -202,15 +206,13 @@
 }
 
 .arrow-icon {
-  color: var(--color-black);
+  color: var(--color-white);
   transition: all 0.3s ease;
   border-radius: 50%;
   padding: 4px;
-}
-
-.arrow-icon:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  transform: translateX(2px);
+  width: 32px;
+  height: 32px;
+  transform: rotate(-45deg);
 }
 
 /* Responsive adjustments */

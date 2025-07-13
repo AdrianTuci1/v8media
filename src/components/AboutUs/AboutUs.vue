@@ -46,6 +46,7 @@ const paragraphWordsArray = paragraphText.split(' ')
 
 // Animation timeline
 let tl = null
+let scrollTrigger = null
 
 onMounted(() => {
   // Initialize animations
@@ -53,39 +54,43 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  // Clean up ScrollTrigger
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+  // Clean up only this component's ScrollTrigger and timeline
+  if (scrollTrigger) {
+    scrollTrigger.kill()
+  }
   if (tl) {
     tl.kill()
   }
 })
 
 const initAnimations = () => {
-  // Create main timeline
-  tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: aboutSection.value,
-      start: "top 80%",
-      end: "bottom 20%",
-      toggleActions: "play pause resume reverse",
-      markers: false
-    }
+  // Set initial state for overlay text
+  gsap.set(paragraphWordsRef.value, {
+    opacity: 0,
+    y: 0
   })
 
-  // Animate overlay text to appear letter by letter over the semi-transparent background
-  tl.fromTo(paragraphWordsRef.value,
-    {
-      opacity: 0,
-      y: 0
-    },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.6,
-      stagger: 0.03,
-      ease: "power2.out"
-    }
-  )
+  // Create main timeline
+  tl = gsap.timeline()
+
+  // Animate overlay text to appear word by word over the semi-transparent background
+  tl.to(paragraphWordsRef.value, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    stagger: 0.05,
+    ease: "power2.out"
+  })
+
+  // Create ScrollTrigger for the timeline
+  scrollTrigger = ScrollTrigger.create({
+    trigger: aboutSection.value,
+    start: "top 80%",
+    end: "bottom 20%",
+    animation: tl,
+    toggleActions: "play none none reverse",
+    markers: false
+  })
 }
 </script>
 
@@ -95,7 +100,7 @@ const initAnimations = () => {
   background-color: var(--color-white);
   position: relative;
   overflow: hidden;
-  margin-bottom: 20%;
+  margin-bottom: 80px;
 }
 
 .container {

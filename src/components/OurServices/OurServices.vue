@@ -81,6 +81,10 @@ const mouseX = ref(0)
 const mouseY = ref(0)
 const tiltData = ref({ y: 0 })
 
+// GSAP tweens for cleanup
+let positionTween = null
+let tiltTween = null
+
 const containerPosition = computed(() => {
   if (!activeService.value) return {}
   
@@ -100,21 +104,32 @@ const imageTransform = computed(() => {
 })
 
 const updateSmoothPosition = () => {
-  // Use GSAP for smooth interpolation with bigger delay
-  gsap.to(smoothPosition.value, {
+  // Kill existing tween if any
+  if (positionTween) {
+    positionTween.kill()
+  }
+  
+  // Create new tween for smooth interpolation
+  positionTween = gsap.to(smoothPosition.value, {
     x: mousePosition.value.x,
     y: mousePosition.value.y,
-    duration: 0.8, // Increased delay
+    duration: 0.8,
     ease: "power2.out"
   })
 }
 
 const updateTilt = () => {
+  // Kill existing tween if any
+  if (tiltTween) {
+    tiltTween.kill()
+  }
+  
   // Calculate minimal tilt based on horizontal mouse movement
   const centerX = window.innerWidth / 2
-  const targetTilt = (mouseX.value - centerX) * 0.006 // Very minimal horizontal tilt
+  const targetTilt = (mouseX.value - centerX) * 0.006
   
-  gsap.to(tiltData.value, {
+  // Create new tween for tilt
+  tiltTween = gsap.to(tiltData.value, {
     y: targetTilt,
     duration: 0.3,
     ease: "power2.out"
@@ -123,7 +138,6 @@ const updateTilt = () => {
 
 const handleMouseEnter = (service) => {
   activeService.value = service
-  // Start smooth animation when image becomes active
   updateSmoothPosition()
   updateTilt()
 }
@@ -133,14 +147,28 @@ const handleMouseLeave = () => {
 }
 
 const handleMouseMove = (event) => {
+  // Use fixed positioning with ScrollSmoother scroll offset
+  let scrollY = 0
+  
+  // Get scroll position from ScrollSmoother if available
+  if (window.ScrollSmoother) {
+    const smoother = ScrollSmoother.get()
+    if (smoother) {
+      scrollY = smoother.scrollTop()
+    } else {
+      scrollY = window.scrollY
+    }
+  } else {
+    scrollY = window.scrollY
+  }
+  
   mousePosition.value = {
     x: event.clientX,
-    y: event.clientY
+    y: event.clientY + scrollY
   }
   mouseX.value = event.clientX
   mouseY.value = event.clientY
   
-  // Update position and tilt smoothly when image is active
   if (activeService.value) {
     updateSmoothPosition()
     updateTilt()
@@ -154,7 +182,13 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  // GSAP handles cleanup automatically
+  // Clean up GSAP tweens
+  if (positionTween) {
+    positionTween.kill()
+  }
+  if (tiltTween) {
+    tiltTween.kill()
+  }
 })
 </script>
 
@@ -164,6 +198,7 @@ onUnmounted(() => {
   color: rgb(182, 179, 179);
   width: 100%;
   padding-inline: 30px;
+  position: relative;
 }
 
 .our-services-title {
@@ -271,6 +306,7 @@ onUnmounted(() => {
 .image-column {
   position: relative;
   height: 400px;
+  overflow: visible;
 }
 
 .hover-image-container {

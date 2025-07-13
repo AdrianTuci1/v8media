@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer class="footer" ref="footerRef">
     <div class="footer-container">
       <!-- Main footer content -->
       <div class="footer-content">
@@ -7,8 +7,12 @@
         <div class="footer-section">
           <h1 class="footer-heading">Let's turn your ideas into reality.</h1>
           <p class="footer-description">Feel free to reach out if you want to collaborate with us, or simply have a chat.</p>
-          <button class="become-client-btn">Become a client</button>
-          <p class="email-alternative">Don't like forms? Send an email.</p>
+          <button class="become-client-btn">
+            <span>Become a client</span>
+            <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </div>
         
         <!-- Second column: Contact us -->
@@ -56,12 +60,75 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { smoothScrollToTop } from '../utils/smoothScroll.js'
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger)
+
+const footerRef = ref(null)
+let footerAnimation = null
+
 const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-};
+  // Use ScrollSmoother if available, otherwise fallback to utility
+  if (window.ScrollSmoother) {
+    const smoother = ScrollSmoother.get()
+    if (smoother) {
+      smoother.scrollTo(0, { duration: 1.5 })
+    } else {
+      smoothScrollToTop()
+    }
+  } else {
+    smoothScrollToTop()
+  }
+}
+
+onMounted(() => {
+  // Initialize footer slide animation
+  initFooterAnimation()
+})
+
+onUnmounted(() => {
+  // Clean up animation
+  if (footerAnimation) {
+    footerAnimation.kill()
+  }
+  // Only kill ScrollTrigger instances created by this component
+  ScrollTrigger.getAll().forEach(trigger => {
+    if (trigger.vars.trigger === footerRef.value) {
+      trigger.kill()
+    }
+  })
+})
+
+const initFooterAnimation = () => {
+  // Set initial state - footer starts slightly below but still visible
+  gsap.set(footerRef.value, {
+    y: '-400px',
+    opacity: 1
+  })
+
+  // Create animation timeline
+  footerAnimation = gsap.timeline({
+    scrollTrigger: {
+      trigger: footerRef.value,
+      start: 'top 50%',
+      end: 'bottom 80%',
+      toggleActions: 'play none none reverse',
+      markers: false
+    }
+  })
+
+  // Animate footer sliding up from bottom
+  footerAnimation.to(footerRef.value, {
+    y: '0px',
+    opacity: 1,
+    duration: 0.8,
+    ease: 'power2.out'
+  })
+}
 </script>
 
 <style scoped>
@@ -70,6 +137,9 @@ const scrollToTop = () => {
   color: var(--color-white);
   padding: var(--spacing-xl) 0 var(--spacing-lg);
   margin-top: var(--spacing-xl);
+  position: relative;
+  z-index: 0;
+  min-height: 200px;
 }
 
 .footer-container {
@@ -107,21 +177,41 @@ const scrollToTop = () => {
 }
 
 .become-client-btn {
-  background-color: var(--color-accent);
-  color: var(--color-white);
+  background: var(--color-accent);
   border: none;
-  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--color-white);
   font-size: var(--font-size-base);
-  font-weight: 600;
-  border-radius: 4px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom: var(--spacing-md);
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
   align-self: flex-start;
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
 
 .become-client-btn:hover {
-  background-color: var(--color-accent-dark);
+  background: var(--color-accent-dark);
+}
+
+.become-client-btn:hover .arrow-icon {
+  transform: rotate(-45deg) translateX(3px);
+}
+
+.arrow-icon {
+  color: var(--color-white);
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  padding: 4px;
+  width: 32px;
+  height: 32px;
+  transform: rotate(-45deg);
 }
 
 .email-alternative {

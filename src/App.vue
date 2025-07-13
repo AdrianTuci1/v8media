@@ -1,43 +1,73 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import NewHero from './components/NewHero/NewHero.vue'
 import Showcase from './components/Showcase/Showcase.vue'
-import ClientTypes from './components/ClientTypes/ClientTypes.vue'
+import DataDriven from './components/DataDriven/DataDriven.vue'
 import Testimonials from './components/Testimonials/Testimonials.vue'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 import AboutUs from './components/AboutUs/AboutUs.vue'
 import OurServices from './components/OurServices/OurServices.vue'
 
+// Register ScrollSmoother
+gsap.registerPlugin(ScrollSmoother)
+
 const groupAnimationComplete = ref(true)
+const smoother = ref(null)
+
+onMounted(() => {
+  // Initialize ScrollSmoother
+  smoother.value = ScrollSmoother.create({
+    wrapper: '#smooth-wrapper',
+    content: '#smooth-content',
+    smooth: 1.5,
+    effects: true,
+    normalizeScroll: true,
+    ignoreMobileResize: true,
+  })
+})
+
+onUnmounted(() => {
+  if (smoother.value) {
+    smoother.value.kill()
+  }
+})
 </script>
 
 <template>
-  <div class="app">
+
+  <div id="smooth-wrapper" class="app">
+
     <!-- Navbar -->
-    <Navbar v-if="groupAnimationComplete" />
-    
-    <!-- Hero Section -->
-    <NewHero />
+    <Navbar />
+    <div id="smooth-content">
+      
+      <!-- Hero Section -->
+      <NewHero />
 
-    <AboutUs />
+      <AboutUs />
 
-    
-    <!-- Main Content -->
-    <div class="main-content">
-      <OurServices v-if="groupAnimationComplete"/>
-      <!-- Showcase -->
-      <Showcase />
+      
+      <!-- Main Content -->
+      <div class="main-content">
+        <OurServices />
+        <!-- Showcase -->
+        <Showcase />
 
+        <!-- Data Driven -->
+        <DataDriven />
 
-      <!-- Testimonials -->
-      <Testimonials />
+        <!-- Testimonials -->
+        <Testimonials />
 
+      </div>
+      
+      <!-- Footer -->
+      <Footer v-if="groupAnimationComplete"/>
+      
     </div>
-    
-    <!-- Footer -->
-    <Footer v-if="groupAnimationComplete" />
-    
   </div>
 </template>
 
@@ -45,9 +75,23 @@ const groupAnimationComplete = ref(true)
 .app {
   margin: 0;
   min-height: 100vh;
-  overflow-x: hidden;
   position: relative;
   background-color: var(--color-white);
+}
+
+#smooth-wrapper {
+  overflow: hidden;
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#smooth-content {
+  min-height: 100vh;
 }
 
 .main-content {
