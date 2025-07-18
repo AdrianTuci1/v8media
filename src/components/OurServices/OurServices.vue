@@ -1,42 +1,44 @@
 <template>
-  <section class="our-services">
-    <h1 class="our-services-title">our services</h1>
+  <section class="our-services" role="region" aria-labelledby="services-heading">
+    <h2 id="services-heading" class="our-services-title">{{ t('ourServices') }}</h2>
     <div class="container02">
       <div class="services-layout">
         <!-- Left column: Services list -->
-        <div class="services-column">
+        <div class="services-column" role="list" aria-label="Lista serviciilor noastre">
           <div 
             class="service-item" 
             v-for="(service, index) in services" 
             :key="service.id"
             @mouseenter="handleMouseEnter(service)"
             @mouseleave="handleMouseLeave"
-            @mousemove="handleMouseMove"
+            role="listitem"
+            :aria-label="`${t(service.title)} - serviciu ${index + 1}`"
           >
             <div class="service-content">
               <div class="service-left">
-                <span class="service-number">({{ String(index + 1).padStart(2, '0') }})</span>
+                <span class="service-number" aria-hidden="true">({{ String(index + 1).padStart(2, '0') }})</span>
               </div>
               <div class="service-right">
-                <h3 class="service-title">{{ service.title }}</h3>
-                <div class="service-arrow">↗</div>
+                <h3 class="service-title">{{ t(service.title) }}</h3>
+                <div class="service-arrow" aria-hidden="true">↗</div>
               </div>
             </div>
-            <div class="hover-overlay"></div>
+            <div class="hover-overlay" aria-hidden="true"></div>
           </div>
         </div>
         
         <!-- Right column: Hover image display -->
-        <div class="image-column">
+        <div class="image-column" role="complementary" aria-label="Ilustrații servicii">
           <div 
             class="hover-image-container"
             :class="{ 'active': activeService }"
             :style="containerPosition"
+            aria-hidden="true"
           >
             <img 
               v-if="activeService" 
               :src="activeService.image" 
-              :alt="activeService.title"
+              :alt="`Ilustrație pentru serviciul ${t(activeService.title)}`"
               class="hover-image"
               :style="imageTransform"
             />
@@ -50,26 +52,29 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
 
 const services = ref([
   {
     id: 1,
-    title: 'Strategic Marketing',
+    title: 'strategicMarketing',
     image: '/strategic-marketing.png'
   },
   {
     id: 2,
-    title: 'Brand Identity',
+    title: 'brandingIdentity',
     image: '/branding-identity.png'
   },
   {
     id: 3,
-    title: 'Web Development',
+    title: 'webDesign',
     image: '/web-design.png'
   },
   {
     id: 4,
-    title: 'Automations',
+    title: 'automation',
     image: '/creativo.png'
   }
 ])
@@ -81,9 +86,23 @@ const mouseX = ref(0)
 const mouseY = ref(0)
 const tiltData = ref({ y: 0 })
 
+// Image dimensions for positioning
+const imageDimensions = ref({ width: 320, height: 240 })
+
 // GSAP tweens for cleanup
 let positionTween = null
 let tiltTween = null
+
+// Function to update image dimensions based on viewport
+const updateImageDimensions = () => {
+  if (window.innerWidth <= 480) {
+    imageDimensions.value = { width: 200, height: 150 }
+  } else if (window.innerWidth <= 768) {
+    imageDimensions.value = { width: 240, height: 180 }
+  } else {
+    imageDimensions.value = { width: 320, height: 240 }
+  }
+}
 
 const containerPosition = computed(() => {
   if (!activeService.value) return {}
@@ -140,31 +159,23 @@ const handleMouseEnter = (service) => {
   activeService.value = service
   updateSmoothPosition()
   updateTilt()
+  
+  // Add global mouse move listener
+  document.addEventListener('mousemove', handleGlobalMouseMove)
 }
 
 const handleMouseLeave = () => {
   activeService.value = null
+  
+  // Remove global mouse move listener
+  document.removeEventListener('mousemove', handleGlobalMouseMove)
 }
 
-const handleMouseMove = (event) => {
-  // Use fixed positioning with ScrollSmoother scroll offset
-  let scrollY = 0
-  
-  // Get scroll position from ScrollSmoother if available
-  if (window.ScrollSmoother) {
-    const smoother = ScrollSmoother.get()
-    if (smoother) {
-      scrollY = smoother.scrollTop()
-    } else {
-      scrollY = window.scrollY
-    }
-  } else {
-    scrollY = window.scrollY
-  }
-  
+const handleGlobalMouseMove = (event) => {
+  // Set position to cursor coordinates directly
   mousePosition.value = {
     x: event.clientX,
-    y: event.clientY + scrollY
+    y: event.clientY
   }
   mouseX.value = event.clientX
   mouseY.value = event.clientY
@@ -175,10 +186,18 @@ const handleMouseMove = (event) => {
   }
 }
 
+const handleMouseMove = (event) => {
+  // This is now handled by the global listener
+}
+
 onMounted(() => {
   // Initialize smooth position
   smoothPosition.value = { x: 0, y: 0 }
   tiltData.value = { y: 0 }
+  
+  // Update image dimensions based on viewport
+  updateImageDimensions()
+  window.addEventListener('resize', updateImageDimensions)
 })
 
 onUnmounted(() => {
@@ -189,6 +208,10 @@ onUnmounted(() => {
   if (tiltTween) {
     tiltTween.kill()
   }
+  
+  // Clean up event listeners
+  window.removeEventListener('resize', updateImageDimensions)
+  document.removeEventListener('mousemove', handleGlobalMouseMove)
 })
 </script>
 

@@ -2,7 +2,7 @@
   <div class="contact-form-overlay" v-if="isOpen" @click="closeForm">
     <div class="contact-form-drawer" @click.stop>
       <div class="drawer-header">
-        <h2 class="drawer-title">Hey! Tell us <br/> what you have in mind</h2>
+        <h2 class="drawer-title">{{ t('contactForm') }}</h2>
         <button class="close-btn" @click="closeForm">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -13,44 +13,44 @@
       <form class="contact-form" @submit.prevent="submitForm">
         <div class="form-row">
           <div class="form-group">
-            <label for="name">Nume</label>
+            <label for="name">{{ t('name') }}</label>
             <input 
               type="text" 
               id="name" 
               v-model="formData.name" 
               required
-              placeholder="Your name"
+              :placeholder="t('name')"
             >
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">{{ t('email') }}</label>
             <input 
               type="email" 
               id="email" 
               v-model="formData.email" 
               required
-              placeholder="your.email@example.com"
+              :placeholder="t('email')"
             >
           </div>
         </div>
         
         <div class="form-group">
-          <label for="project">Tell us about your project</label>
+          <label for="project">{{ t('message') }}</label>
           <textarea 
             id="project" 
             v-model="formData.project" 
             required
-            placeholder="Describe your project..."
+            :placeholder="t('message')"
             rows="4"
           ></textarea>
         </div>
         
         <div class="form-actions">
           <div class="contact-info">
-            <p>Email: <a href="mailto:hello@v8media.ro">hello@v8media.ro</a></p>
+            <p>{{ t('email') }}: <a href="mailto:hello@v8media.ro">office@v8media.ro</a></p>
           </div>
           <button type="submit" class="submit-btn">
-            Submit the request
+            {{ t('send') }}
           </button>
         </div>
       </form>
@@ -60,6 +60,9 @@
 
 <script setup>
 import { ref, watch, onUnmounted } from 'vue'
+import { useI18n } from '../composables/useI18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   isOpen: {

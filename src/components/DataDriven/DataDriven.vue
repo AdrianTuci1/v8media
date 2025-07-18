@@ -2,7 +2,7 @@
   <section class="data-driven">
     <div class="container">
       <div class="content">
-        <h2 class="title">Numbers don't lie. <br/> We use Data <img src="/data01.png" alt="Data Driven" class="data-driven-icon" /> <br/> <img src="/data02.png" alt="Data Driven" class="data-driven-icon" /> Science to drive <br/><span class="highlight">calculated growth.</span></h2>
+        <h2 class="title">{{ t('dataDrivenTitle') }} <br/> {{ t('dataDrivenRow') }} <img src="/data01.png" alt="Data Driven" class="data-driven-icon" /> <br/> <img src="/data02.png" alt="Data Driven" class="data-driven-icon" /> {{ t('dataDrivenDesc') }} <span class="highlight">{{ t('dataDrivenDesc2') }}</span></h2>
       </div>
       
       <!-- Swiper container for animated frames -->
@@ -20,6 +20,9 @@ import { onMounted } from 'vue'
 import Swiper from 'swiper'
 import { Autoplay } from 'swiper/modules'
 import 'swiper/css'
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
 
 let swiper = null
 
@@ -41,9 +44,10 @@ onMounted(() => {
 
 <style scoped>
 .data-driven {
-  padding: 120px 0;
+  padding: 120px 30px;
   background-color: var(--color-white);
   position: relative;
+
 }
 
 .container {
@@ -55,6 +59,9 @@ onMounted(() => {
   border-radius: 48px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 img {
@@ -72,6 +79,7 @@ img {
   justify-content: center;
   position: relative;
   z-index: 2;
+  width: fit-content;
 }
 
 .title {
@@ -84,6 +92,7 @@ img {
   margin: 0 auto;
   position: relative;
   z-index: 2;
+  width: fit-content;
 }
 
 .highlight {
@@ -112,7 +121,7 @@ img {
 /* Responsive design */
 @media (max-width: 768px) {
   .data-driven {
-    padding: 80px 0;
+    padding: 80px 10px;
   }
   
   .title {
@@ -121,6 +130,9 @@ img {
 }
 
 @media (max-width: 480px) {
+  .data-driven {
+    padding: 80px 10px;
+  }
   .title {
     font-size: 2rem;
   }

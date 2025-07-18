@@ -1,7 +1,5 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { gsap } from 'gsap'
-import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import NewHero from './components/NewHero/NewHero.vue'
 import Showcase from './components/Showcase/Showcase.vue'
 import DataDriven from './components/DataDriven/DataDriven.vue'
@@ -10,41 +8,34 @@ import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 import AboutUs from './components/AboutUs/AboutUs.vue'
 import OurServices from './components/OurServices/OurServices.vue'
+import { useI18n } from './composables/useI18n'
 
-// Register ScrollSmoother
-gsap.registerPlugin(ScrollSmoother)
+// Initialize translation system
+const { initLanguage } = useI18n()
 
 const groupAnimationComplete = ref(true)
-const smoother = ref(null)
 
 onMounted(() => {
-  // Initialize ScrollSmoother
-  smoother.value = ScrollSmoother.create({
-    wrapper: '#smooth-wrapper',
-    content: '#smooth-content',
-    smooth: 1.1,
-    effects: true,
-    normalizeScroll: true,
-    ignoreMobileResize: true,
-  })
+  // Initialize translation system
+  initLanguage()
 })
 
 onUnmounted(() => {
-  if (smoother.value) {
-    smoother.value.kill()
-  }
+  // No ScrollSmoother to kill here
 })
 </script>
 
 <template>
-
-  <div id="smooth-wrapper" class="app">
+  <div class="app" role="application" aria-label="V8 Media Digital Agency">
+    
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Sari la conținutul principal</a>
 
     <!-- Navbar -->
     <Navbar />
-    <div id="smooth-content">
-      
-      <!-- Hero Section -->
+    
+    <!-- Hero Section -->
+    <main role="main" id="main-content">
       <NewHero />
 
       <!-- Main Content -->
@@ -63,10 +54,11 @@ onUnmounted(() => {
         <Testimonials />
         
       </div>
-              <!-- Footer -->
-              <Footer v-if="groupAnimationComplete"/>
-      
-    </div>
+    </main>
+    
+    <!-- Footer -->
+    <Footer v-if="groupAnimationComplete"/>
+    
   </div>
 </template>
 
@@ -76,21 +68,6 @@ onUnmounted(() => {
   min-height: 100vh;
   position: relative;
   background-color: var(--color-white);
-}
-
-#smooth-wrapper {
-  overflow: hidden;
-  position: fixed;
-  height: 100vh;
-  width: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-#smooth-content {
-  min-height: 100vh;
 }
 
 .main-content {
@@ -105,6 +82,10 @@ onUnmounted(() => {
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
+}
+
+.skip-link {
+  display: none;
 }
 
 /* Ensure the frame doesn't interfere with scrolling */

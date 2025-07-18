@@ -1,17 +1,18 @@
 <template>
-  <section class="about-us" ref="aboutSection">
+  <section class="about-us" ref="aboutSection" role="region" aria-labelledby="about-us-heading">
     <div class="container">
       <div class="about-empty"></div>
       <div class="about-content">
+        <h2 id="about-us-heading" class="visually-hidden">Despre V8 Media</h2>
         <div class="content-text" ref="contentText">
           <!-- Background semi-transparent text -->
-          <p class="paragraph background-text">
+          <p class="paragraph background-text" aria-hidden="true">
             <span class="word" v-for="(word, index) in paragraphWordsArray" :key="`bg-${index}`">
               {{ word }}
             </span>
           </p>
           <!-- Animated overlay text -->
-          <p class="paragraph overlay-text" ref="paragraph1">
+          <p class="paragraph overlay-text" ref="paragraph1" role="text">
             <span class="word" v-for="(word, index) in paragraphWordsArray" :key="`overlay-${index}`" :ref="el => paragraphWordsRef[index] = el">
               {{ word }}
             </span>
@@ -23,9 +24,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useI18n } from '../../composables/useI18n'
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger)
@@ -38,11 +40,13 @@ const paragraph1 = ref(null)
 // Word refs
 const paragraphWordsRef = ref([])
 
-// Content - shortened paragraph
-const paragraphText = "We are a creative digital agency passionate about transforming brands through innovative design and strategic thinking. Our team combines artistic vision with technical expertise to deliver exceptional digital experiences."
+const { t } = useI18n()
+
+// Reactive paragraph text
+const paragraphText = computed(() => t.value('aboutUsText'))
 
 // Split text into arrays
-const paragraphWordsArray = paragraphText.split(' ')
+const paragraphWordsArray = computed(() => paragraphText.value.split(' '))
 
 // Animation timeline
 let tl = null
@@ -52,6 +56,21 @@ onMounted(() => {
   // Initialize animations
   initAnimations()
 })
+
+// Watch for language changes and reinitialize animations
+watch(paragraphWordsArray, () => {
+  // Clean up existing animations
+  if (scrollTrigger) {
+    scrollTrigger.kill()
+  }
+  if (tl) {
+    tl.kill()
+  }
+  // Reinitialize with new text
+  nextTick(() => {
+    initAnimations()
+  })
+}, { deep: true })
 
 onUnmounted(() => {
   // Clean up only this component's ScrollTrigger and timeline
@@ -174,15 +193,24 @@ const initAnimations = () => {
 /* Small screen styles */
 @media (max-width: 767px) {
   .about-us {
-    padding: 80px 0;
+    padding: 60px 10px;
+  }
+
+  .about-empty {
+    display: none;
   }
   
   .container {
     padding: 0 15px;
   }
   
+  .about-content {
+    width: 100%;
+  }
+  
   .content-text {
-    font-size: clamp(1.3rem, 3vw, 2.2rem);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    margin: 80px 0;
   }
 }
 </style> 

@@ -8,23 +8,25 @@
       
       <!-- Right side elements -->
       <div class="navbar-right">
-        <button class="become-client-btn" @click="openContactForm"><span>+ Become a client</span></button>
+        <button class="become-client-btn" @click="openContactForm"><span>{{ t('becomeClient') }}</span></button>
         <div class="language-selector">
           <button 
             class="language-btn current-language"
             @click="toggleLanguageDropdown"
           >
-            {{ currentLanguage }}
+            {{ currentLanguageName }}
           </button>
           <div 
             v-if="isLanguageDropdownOpen" 
             class="language-dropdown"
           >
             <button 
+              v-for="lang in availableLanguages"
+              :key="lang.code"
               class="language-option"
-              @click="switchLanguage(currentLanguage === 'EN' ? 'RO' : 'EN')"
+              @click="switchLanguage(lang.code)"
             >
-              {{ currentLanguage === 'EN' ? 'RO' : 'EN' }}
+              {{ lang.name }}
             </button>
           </div>
         </div>
@@ -40,19 +42,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import ContactForm from './ContactForm.vue'
+import { useI18n } from '../composables/useI18n'
 
-const currentLanguage = ref('EN')
+const { currentLanguage, t, switchLanguage: switchLang, availableLanguages, initLanguage } = useI18n()
+
 const isLanguageDropdownOpen = ref(false)
 const isScrolled = ref(false)
 const isContactFormOpen = ref(false)
 
+const currentLanguageName = computed(() => {
+  return currentLanguage.value === 'en' ? 'EN' : 'RO'
+})
+
 const switchLanguage = (lang) => {
-  currentLanguage.value = lang
+  switchLang(lang)
   isLanguageDropdownOpen.value = false
-  // Here you can add logic to actually change the language
-  console.log(`Language switched to: ${lang}`)
 }
 
 const toggleLanguageDropdown = () => {
@@ -72,6 +78,7 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
+  initLanguage()
   window.addEventListener('scroll', handleScroll)
 })
 

@@ -1,19 +1,19 @@
 <template>
-  <section class="testimonials">
+  <section class="testimonials" role="region" aria-labelledby="testimonials-heading">
     <div class="container">
       <div class="testimonials-grid">
         <!-- Left Column: Title -->
         <div class="testimonials-title">
-          <h2>What our clients say</h2>
+          <h2 id="testimonials-heading">{{ t('whatOurClientsSay') }}</h2>
         </div>
         
         <!-- Right Column: Testimonial Content -->
-        <div class="testimonial-content">
-          <div class="testimonial-text">
+        <div class="testimonial-content" role="region" aria-label="Testimoniale clienți">
+          <blockquote class="testimonial-text">
             <p>{{ currentTestimonial.review }}</p>
-          </div>
+          </blockquote>
           
-          <div class="testimonial-separator"></div>
+          <div class="testimonial-separator" aria-hidden="true"></div>
           
           <div class="testimonial-author">
             <div class="author-info">
@@ -23,13 +23,14 @@
             
             <div class="author-company">
               <span class="company-name">{{ currentTestimonial.company }}</span>
-              <div class="navigation-arrows">
+              <div class="navigation-arrows" role="group" aria-label="Navigare testimoniale">
                 <button 
                   class="arrow-btn" 
                   @click="previousTestimonial"
                   :disabled="currentIndex === 0"
+                  aria-label="Testimonial anterior"
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
@@ -37,8 +38,9 @@
                   class="arrow-btn" 
                   @click="nextTestimonial"
                   :disabled="currentIndex === testimonials.length - 1"
+                  aria-label="Testimonial următor"
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
@@ -53,6 +55,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
 
 const currentIndex = ref(0)
 

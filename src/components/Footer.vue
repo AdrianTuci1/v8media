@@ -5,10 +5,10 @@
       <div class="footer-content">
         <!-- First column: Let's turn your ideas into reality -->
         <div class="footer-section">
-          <h1 class="footer-heading">Let's turn your ideas into reality.</h1>
-          <p class="footer-description">Feel free to reach out if you want to collaborate with us, or simply have a chat.</p>
+          <h1 class="footer-heading">{{ t('letsTalk') }}</h1>
+          <p class="footer-description">{{ t('heroMotto') }}</p>
           <button class="become-client-btn">
-            <span>Become a client</span>
+            <span>{{ t('becomeClient') }}</span>
             <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -17,7 +17,7 @@
         
         <!-- Second column: Contact us -->
         <div class="footer-section">
-          <h3 class="footer-title">Contact us</h3>
+          <h3 class="footer-title">{{ t('contactUs') }}</h3>
           <div class="contact-info">
             <a href="mailto:hello@v8media.com" class="contact-link">hello@v8media.com</a>
             <a href="tel:+40123456789" class="contact-link">+40 123 456 789</a>
@@ -27,7 +27,7 @@
         
         <!-- Third column: Follow us -->
         <div class="footer-section follow-us-section">
-          <h3 class="footer-title">Follow us</h3>
+          <h3 class="footer-title">{{ t('followUs') }}</h3>
           <div class="social-links">
             <a href="#" class="social-link">Instagram</a>
             <a href="#" class="social-link">LinkedIn</a>
@@ -36,12 +36,12 @@
         
         <!-- Fourth column: Services -->
         <div class="footer-section">
-          <h3 class="footer-title">Services</h3>
+          <h3 class="footer-title">{{ t('ourServices') }}</h3>
           <div class="services-list">
-            <a href="#" class="service-link">Web Design</a>
-            <a href="#" class="service-link">Branding</a>
-            <a href="#" class="service-link">Marketing</a>
-            <a href="#" class="service-link">Development</a>
+            <a href="#" class="service-link">{{ t('webDesign') }}</a>
+            <a href="#" class="service-link">{{ t('brandingIdentity') }}</a>
+            <a href="#" class="service-link">{{ t('strategicMarketing') }}</a>
+            <a href="#" class="service-link">{{ t('creativeDesign') }}</a>
           </div>
         </div>
       </div>
@@ -49,10 +49,10 @@
       <!-- Bottom section with copyright and back to top -->
       <div class="footer-bottom">
         <div class="copyright">
-          <span class="copyright-text">© v8media. All rights reserved.</span>
+          <span class="copyright-text">© v8media. {{ t('allRightsReserved') }}</span>
         </div>
         <button class="back-to-top-btn" @click="scrollToTop">
-          Back to top
+          {{ t('backUp') }}
         </button>
       </div>
     </div>
@@ -64,6 +64,9 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { smoothScrollToTop } from '../utils/smoothScroll.js'
+import { useI18n } from '../composables/useI18n'
+
+const { t } = useI18n()
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger)
@@ -235,6 +238,7 @@ const initFooterAnimation = () => {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  align-items: flex-start;
 }
 
 .contact-link {
@@ -243,6 +247,7 @@ const initFooterAnimation = () => {
   text-decoration: none;
   transition: color 0.3s ease;
   opacity: 0.8;
+  text-align: left;
 }
 
 .contact-link:hover {
@@ -261,6 +266,7 @@ const initFooterAnimation = () => {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  align-items: flex-start;
 }
 
 .social-link {
@@ -269,6 +275,7 @@ const initFooterAnimation = () => {
   text-decoration: none;
   transition: color 0.3s ease;
   opacity: 0.8;
+  text-align: left;
 }
 
 .social-link:hover {
@@ -280,6 +287,7 @@ const initFooterAnimation = () => {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  align-items: flex-start;
 }
 
 .service-link {
@@ -288,6 +296,7 @@ const initFooterAnimation = () => {
   text-decoration: none;
   transition: color 0.3s ease;
   opacity: 0.8;
+  text-align: left;
 }
 
 .service-link:hover {

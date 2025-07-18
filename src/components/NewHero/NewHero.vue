@@ -1,8 +1,8 @@
 <template>
-  <section class="hero" ref="heroRef">
+  <section class="hero" ref="heroRef" role="banner" aria-labelledby="hero-title">
 
     <!-- Background Video -->
-    <video class="hero-background-video" autoplay muted loop playsinline preload="auto">
+    <video class="hero-background-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
       <source src="/screen-recording.mov" type="video/quicktime">
       <source src="/screen-recording.mov" type="video/mp4">
     </video>
@@ -10,19 +10,19 @@
     <div class="hero-container">
       <!-- Left Column -->
       <div class="hero-left">
-        <h1 class="hero-title" ref="heroTitle">Speed up <br/> your digital <br/>footprint.</h1>
+        <h1 class="hero-title" ref="heroTitle" id="hero-title">{{ t('heroTitle') }}</h1>
         
-        <p class="hero-motto mobile-motto" ref="heroMotto">We empower your business with cutting-edge web design and marketing solutions that deliver exceptional results.</p>
+        <p class="hero-motto mobile-motto" ref="heroMotto" aria-describedby="hero-title">{{ t('heroMotto') }}</p>
         
-        <div class="results-grid" ref="resultsGrid">
-          <div class="result-item">
-            <div class="result-number">+3</div>
-            <span class="result-label">years of experience</span>
+        <div class="results-grid" ref="resultsGrid" role="region" aria-label="Our Results">
+          <div class="result-item" role="article">
+            <div class="result-number" aria-label="3 years of experience">+3</div>
+            <span class="result-label">{{ t('yearsExperience') }}</span>
           </div>
           
-          <div class="result-item">
-            <div class="result-number">+15</div>
-            <span class="result-label">projects completed</span>
+          <div class="result-item" role="article">
+            <div class="result-number" aria-label="15 projects completed">+15</div>
+            <span class="result-label">{{ t('projectsCompleted') }}</span>
           </div>
         </div>
       </div>
@@ -30,11 +30,11 @@
       <!-- Right Column -->
       <div class="hero-right">
         <div class="hero-content" ref="heroContent">
-          <p class="hero-motto desktop-motto" ref="heroMottoDesktop">We empower your business with cutting-edge web design and marketing solutions that deliver exceptional results.</p>
+          <p class="hero-motto desktop-motto" ref="heroMottoDesktop" aria-describedby="hero-title">{{ t('heroMotto') }}</p>
           <div class="button-arrow-group">
-            <button class="hero-button" ref="heroButton">
-              Let's talk
-              <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <button class="hero-button" ref="heroButton" aria-label="Contact us to start a conversation">
+              {{ t('letsTalk') }}
+              <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
@@ -46,7 +46,9 @@
 </template>
 
 <script setup>
-// Component logic can be added here if needed
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
 </script>
 
 <style scoped>
@@ -252,8 +254,10 @@
   }
 
   .hero-title {
-    font-size: clamp(3.5rem, 8vw, 7rem);
+    padding-top: 50px;
+    font-size: clamp(2.8rem, 6vw, 5rem);
     margin-bottom: var(--spacing-md);
+    line-height: 1.05;
   }
 
   /* Show mobile motto, hide desktop motto */
@@ -290,6 +294,44 @@
 
   .hero-button {
     align-self: flex-start;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .hero {
+    padding: var(--spacing-xs);
+  }
+
+  .hero-container {
+    margin-top: 80px;
+    gap: var(--spacing-lg);
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+  }
+
+  .hero-motto {
+    font-size: clamp(1rem, 3.5vw, 1.2rem);
+  }
+
+  .hero-button {
+    font-size: 1.8rem;
+    padding: var(--spacing-sm) 0;
+  }
+
+  .results-grid {
+    gap: var(--spacing-sm);
+  }
+
+  .result-number {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+  }
+
+  .result-label {
+    font-size: 0.8rem;
   }
 }
 </style>

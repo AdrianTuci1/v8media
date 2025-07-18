@@ -7,8 +7,8 @@
             <img :src="service.image" :alt="service.title" />
           </div>
           <div class="service-content">
-            <h3 class="service-title">{{ service.title }}</h3>
-            <p class="service-description">{{ service.description }}</p>
+            <h3 class="service-title">{{ t(service.title) }}</h3>
+            <p class="service-description">{{ t(service.description) }}</p>
             <div class="service-divider"></div>
             <div class="service-chips">
               <span class="chip" v-for="chip in service.chips" :key="chip">{{ chip }}</span>
@@ -22,26 +22,29 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
 
 const services = ref([
   {
     id: 1,
-    title: 'STRATEGIC MARKETING',
-    description: 'Data-driven marketing strategies that connect with your audience and drive measurable results.',
+    title: 'strategicMarketing',
+    description: 'strategicMarketingDesc',
     chips: ['SEO', 'PPC', 'Social Media', 'Content Strategy', 'Analytics'],
     image: '/strategic-marketing.png'
   },
   {
     id: 2,
-    title: 'BRAND IDENTITY',
-    description: 'Distinctive visual identities that communicate your values and resonate with your target market.',
+    title: 'brandingIdentity',
+    description: 'brandingIdentityDesc',
     chips: ['Logo Design', 'Visual Identity', 'Brand Guidelines', 'Typography', 'Color Palette'],
     image: '/branding-identity.png'
   },
   {
     id: 3,
-    title: 'WEB DEVELOPMENT',
-    description: 'Custom web solutions built with modern technologies for optimal performance and user experience.',
+    title: 'webDesign',
+    description: 'webDesignDesc',
     chips: ['Frontend', 'Backend', 'E-commerce', 'CMS', 'API Integration'],
     image: '/web-design.png'
   }
