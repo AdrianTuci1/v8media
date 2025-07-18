@@ -12,6 +12,8 @@
       <div class="hero-left">
         <h1 class="hero-title" ref="heroTitle">Speed up <br/> your digital <br/>footprint.</h1>
         
+        <p class="hero-motto mobile-motto" ref="heroMotto">We empower your business with cutting-edge web design and marketing solutions that deliver exceptional results.</p>
+        
         <div class="results-grid" ref="resultsGrid">
           <div class="result-item">
             <div class="result-number">+3</div>
@@ -28,7 +30,7 @@
       <!-- Right Column -->
       <div class="hero-right">
         <div class="hero-content" ref="heroContent">
-          <p class="hero-motto" ref="heroMotto">We empower your business with cutting-edge web design and marketing solutions that deliver exceptional results.</p>
+          <p class="hero-motto desktop-motto" ref="heroMottoDesktop">We empower your business with cutting-edge web design and marketing solutions that deliver exceptional results.</p>
           <div class="button-arrow-group">
             <button class="hero-button" ref="heroButton">
               Let's talk
@@ -90,6 +92,7 @@
 
 .hero-container {
   width: 100%;
+  max-width: 1800px;
   display: grid;
   height: 100%;
   grid-template-columns: 1fr 1fr;
@@ -99,6 +102,10 @@
   position: relative;
   z-index: 3;
   margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--spacing-md);
+  box-sizing: border-box;
 }
 
 .hero-left {
@@ -215,6 +222,16 @@
   transform: rotate(-45deg);
 }
 
+/* Desktop motto (hidden on mobile) */
+.desktop-motto {
+  display: block;
+}
+
+/* Mobile motto (hidden on desktop) */
+.mobile-motto {
+  display: none;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .hero {
@@ -224,31 +241,55 @@
   .hero-container {
     grid-template-columns: 1fr;
     gap: var(--spacing-xl);
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
     margin-top: 100px;
   }
 
   .hero-left {
-    align-items: center;
+    align-items: flex-start;
+    order: 1;
   }
 
-  .results-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+  .hero-title {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    margin-bottom: var(--spacing-md);
   }
 
-  .result-item {
-    justify-content: center;
+  /* Show mobile motto, hide desktop motto */
+  .mobile-motto {
+    display: block;
+    order: 2;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .desktop-motto {
+    display: none;
   }
 
   .hero-right {
-    align-items: center;
-    text-align: center;
+    order: 3;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-content {
+    order: 4;
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    order: 5;
+    margin-top: var(--spacing-lg);
+  }
+
+  .result-item {
+    justify-content: flex-start;
   }
 
   .hero-button {
-    align-self: center;
+    align-self: flex-start;
   }
 }
 </style>

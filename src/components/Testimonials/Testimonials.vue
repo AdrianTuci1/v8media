@@ -101,11 +101,14 @@ const previousTestimonial = () => {
   background: var(--color-white);
   color: var(--color-black);
   margin-top: 100px;
+  z-index: 5;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1800px;
   margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  box-sizing: border-box;
 }
 
 .testimonials-grid {

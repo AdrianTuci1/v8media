@@ -143,8 +143,10 @@ const initFooterAnimation = () => {
 }
 
 .footer-container {
+  max-width: 1800px;
   margin: 0 auto;
   padding: 0 var(--spacing-md);
+  box-sizing: border-box;
 }
 
 .footer-content {

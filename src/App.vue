@@ -22,7 +22,7 @@ onMounted(() => {
   smoother.value = ScrollSmoother.create({
     wrapper: '#smooth-wrapper',
     content: '#smooth-content',
-    smooth: 1.5,
+    smooth: 1.1,
     effects: true,
     normalizeScroll: true,
     ignoreMobileResize: true,
@@ -47,25 +47,24 @@ onUnmounted(() => {
       <!-- Hero Section -->
       <NewHero />
 
-      <AboutUs />
-
-      
       <!-- Main Content -->
       <div class="main-content">
-        <OurServices />
-        <!-- Showcase -->
-        <Showcase />
+        <div class="content-wrapper">
+          <AboutUs />
+          <OurServices />
+          <!-- Showcase -->
+          <Showcase />
 
-        <!-- Data Driven -->
-        <DataDriven />
-
-        <!-- Testimonials -->
+          <!-- Data Driven -->
+          <DataDriven />
+        </div>
+        
+        <!-- Testimonials (full width) -->
         <Testimonials />
-
+        
       </div>
-      
-      <!-- Footer -->
-      <Footer v-if="groupAnimationComplete"/>
+              <!-- Footer -->
+              <Footer v-if="groupAnimationComplete"/>
       
     </div>
   </div>
@@ -99,6 +98,13 @@ onUnmounted(() => {
   position: relative;
   z-index: 1;
   min-height: 100vh;
+}
+
+.content-wrapper {
+  max-width: 1800px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Ensure the frame doesn't interfere with scrolling */
