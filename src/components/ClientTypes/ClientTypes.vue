@@ -230,6 +230,7 @@ const services = ref([
   
   .service-content {
     padding: 12px;
+    
   }
   
   .service-title {

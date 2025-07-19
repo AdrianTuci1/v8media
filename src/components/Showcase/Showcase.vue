@@ -36,8 +36,8 @@
             }"
             aria-hidden="true"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="rgba(255,255,255,0.1)"/>
+            <span class="see-live-text">{{ t('seeLive') }}</span>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
               <path d="M8 16L16 8M16 8H10M16 8V14" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
@@ -65,25 +65,25 @@ const projects = ref([
     image: "/rivoli-photo.png",
     video: "/rivoli-video.mp4", // Add video path
     category: "web design",
-    url: "/project-alpha"
+    url: "https://www.hotel-rivoli.ro/"
   },
   {
-    title: "Project Beta", 
-    image: "/hotel-rivoli.png",
+    title: "Simplu", 
+    image: "/Empty.png",
     video: "/rivoli-video.mp4", // Add video path
     category: "ecommerce",
     url: "/project-beta"
   },
   {
     title: "Project Gamma",
-    image: "/rent-a-car.png",
+    image: "/Empty.png",
     video: "/rivoli-video.mp4", // Add video path
     category: "marketing",
     url: "/project-gamma"
   },
   {
     title: "Project Delta",
-    image: "/creativo.png",
+    image: "/Empty.png",
     video: "/rivoli-video.mp4", // Add video path
     category: "branding",
     url: "/project-delta"
@@ -155,8 +155,12 @@ const handleCardLeave = (event) => {
 
 const navigateToProject = (project) => {
   // Handle navigation to project page
-  console.log('Navigating to:', project.url)
-  // You can implement actual navigation here
-  // window.location.href = project.url
+  if (project.url.startsWith('http')) {
+    // External link - open in new tab
+    window.open(project.url, '_blank')
+  } else {
+    // Internal link - navigate in same tab
+    window.location.href = project.url
+  }
 }
 </script> 

@@ -19,8 +19,8 @@
         <div class="footer-section">
           <h3 class="footer-title">{{ t('contactUs') }}</h3>
           <div class="contact-info">
-            <a href="mailto:hello@v8media.com" class="contact-link">hello@v8media.com</a>
-            <a href="tel:+40123456789" class="contact-link">+40 123 456 789</a>
+            <a href="mailto:hello@v8media.com" class="contact-link">office@v8media.com</a>
+            <a href="tel:+40123456789" class="contact-link">+40 786 541 809</a>
             <p class="contact-address">Bucharest, Romania</p>
           </div>
         </div>

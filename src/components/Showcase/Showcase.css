@@ -153,16 +153,18 @@
   position: absolute;
   bottom: 15px;
   right: 15px;
-  width: 40px;
-  height: 40px;
+  width: auto;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 50%;
+  background-color: rgb(0, 0, 0);
+  border-radius: 25px;
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease;
   z-index: 5;
+  padding: 8px 16px;
+  gap: 8px;
 }
 
 .magnetic-arrow:hover {
@@ -176,6 +178,16 @@
 
 .magnetic-arrow:hover svg {
   transform: translateY(-2px);
+}
+
+.see-live-text {
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: wrap;
+  width: 30px;
 }
 
 .card-content {
@@ -216,13 +228,17 @@
   }
   
   .magnetic-arrow {
-    width: 45px;
-    height: 45px;
+    padding: 10px 20px;
+    gap: 10px;
   }
   
   .magnetic-arrow svg {
     width: 28px;
     height: 28px;
+  }
+  
+  .see-live-text {
+    font-size: 0.8rem;
   }
 }
 
@@ -248,12 +264,16 @@
   }
   
   .magnetic-arrow {
-    width: 50px;
-    height: 50px;
+    padding: 12px 24px;
+    gap: 12px;
   }
   
   .magnetic-arrow svg {
     width: 32px;
     height: 32px;
+  }
+  
+  .see-live-text {
+    font-size: 0.85rem;
   }
 } 

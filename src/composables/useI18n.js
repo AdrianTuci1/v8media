@@ -61,6 +61,7 @@ const translations = {
     // Showcase
     ourWork: 'Our Work',
     viewProject: 'View Project',
+    seeLive: 'SEE LIVE',
     
     // Client Types
     clientTypes: 'Client Types',
@@ -132,6 +133,7 @@ const translations = {
     // Showcase
     ourWork: 'Lucrările Noastre',
     viewProject: 'Vezi Proiectul',
+    seeLive: 'VEZI LIVE',
     
     // Client Types
     clientTypes: 'Tipuri de Clienți',

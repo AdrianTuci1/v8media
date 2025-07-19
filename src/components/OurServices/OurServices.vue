@@ -7,6 +7,7 @@
         <div class="services-column" role="list" aria-label="Lista serviciilor noastre">
           <div 
             class="service-item" 
+            :class="{ 'active': activeService && activeService.id === service.id }"
             v-for="(service, index) in services" 
             :key="service.id"
             @mouseenter="handleMouseEnter(service)"
@@ -24,11 +25,20 @@
               </div>
             </div>
             <div class="hover-overlay" aria-hidden="true"></div>
+            
+            <!-- Mobile image - appears under each service item -->
+            <div class="mobile-service-image" v-if="activeService && activeService.id === service.id && isMobile()">
+              <img 
+                :src="activeService.image" 
+                :alt="`Ilustrație pentru serviciul ${t(activeService.title)}`"
+                class="mobile-image"
+              />
+            </div>
           </div>
         </div>
         
-        <!-- Right column: Hover image display -->
-        <div class="image-column" role="complementary" aria-label="Ilustrații servicii">
+        <!-- Right column: Hover image display (desktop only) -->
+        <div class="image-column desktop-only" role="complementary" aria-label="Ilustrații servicii">
           <div 
             class="hover-image-container"
             :class="{ 'active': activeService }"
@@ -44,7 +54,9 @@
             />
           </div>
         </div>
-      </div>
+        
+
+            </div>
     </div>
   </section>
 </template>
@@ -92,6 +104,15 @@ const imageDimensions = ref({ width: 320, height: 240 })
 // GSAP tweens for cleanup
 let positionTween = null
 let tiltTween = null
+
+// Intersection Observer for mobile auto-show
+let intersectionObserver = null
+let debounceTimer = null
+
+// Function to check if we're on mobile
+const isMobile = () => {
+  return window.innerWidth <= 768
+}
 
 // Function to update image dimensions based on viewport
 const updateImageDimensions = () => {
@@ -156,18 +177,20 @@ const updateTilt = () => {
 }
 
 const handleMouseEnter = (service) => {
+  // Only work on desktop
+  if (isMobile()) return
+  
   activeService.value = service
   updateSmoothPosition()
   updateTilt()
-  
-  // Add global mouse move listener
   document.addEventListener('mousemove', handleGlobalMouseMove)
 }
 
 const handleMouseLeave = () => {
-  activeService.value = null
+  // Only work on desktop
+  if (isMobile()) return
   
-  // Remove global mouse move listener
+  activeService.value = null
   document.removeEventListener('mousemove', handleGlobalMouseMove)
 }
 
@@ -190,6 +213,57 @@ const handleMouseMove = (event) => {
   // This is now handled by the global listener
 }
 
+// Setup Intersection Observer for mobile auto-show
+const setupIntersectionObserver = () => {
+  // Clean up existing observer
+  if (intersectionObserver) {
+    intersectionObserver.disconnect()
+  }
+  
+  // Only setup on mobile
+  if (!isMobile()) return
+  
+  intersectionObserver = new IntersectionObserver((entries) => {
+    // Clear existing debounce timer
+    if (debounceTimer) {
+      clearTimeout(debounceTimer)
+    }
+    
+    // Debounce the update to prevent glitches
+    debounceTimer = setTimeout(() => {
+      // Find the most centered element
+      let mostCentered = null
+      let maxIntersection = 0
+      
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio > maxIntersection) {
+          maxIntersection = entry.intersectionRatio
+          mostCentered = entry.target
+        }
+      })
+      
+      if (mostCentered && maxIntersection > 0.3) {
+        const serviceIndex = parseInt(mostCentered.getAttribute('data-service-index'))
+        const service = services.value[serviceIndex]
+        if (service && (!activeService.value || activeService.value.id !== service.id)) {
+          activeService.value = service
+        }
+      }
+      // Remove the else condition to keep the image visible when scrolling
+    }, 100) // 100ms debounce
+  }, {
+    threshold: [0.1, 0.3, 0.5, 0.7, 0.9], // Multiple thresholds for smoother detection
+    rootMargin: '-20% 0px -20% 0px' // Only trigger in center 60% of viewport
+  })
+  
+  // Observe all service items
+  const serviceItems = document.querySelectorAll('.service-item')
+  serviceItems.forEach((item, index) => {
+    item.setAttribute('data-service-index', index)
+    intersectionObserver.observe(item)
+  })
+}
+
 onMounted(() => {
   // Initialize smooth position
   smoothPosition.value = { x: 0, y: 0 }
@@ -198,6 +272,20 @@ onMounted(() => {
   // Update image dimensions based on viewport
   updateImageDimensions()
   window.addEventListener('resize', updateImageDimensions)
+  
+  // Setup intersection observer for mobile
+  setTimeout(() => {
+    setupIntersectionObserver()
+  }, 100)
+  
+  // Setup resize handler
+  const handleResize = () => {
+    updateImageDimensions()
+    setTimeout(() => {
+      setupIntersectionObserver()
+    }, 100)
+  }
+  window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
@@ -209,6 +297,16 @@ onUnmounted(() => {
     tiltTween.kill()
   }
   
+  // Clean up intersection observer
+  if (intersectionObserver) {
+    intersectionObserver.disconnect()
+  }
+  
+  // Clean up debounce timer
+  if (debounceTimer) {
+    clearTimeout(debounceTimer)
+  }
+  
   // Clean up event listeners
   window.removeEventListener('resize', updateImageDimensions)
   document.removeEventListener('mousemove', handleGlobalMouseMove)
@@ -216,194 +314,5 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.our-services {
-  background: var(--color-white);
-  color: rgb(182, 179, 179);
-  width: 100%;
-  padding-inline: 30px;
-  position: relative;
-}
-
-.our-services-title {
-  font-size: 3.5rem;
-  font-weight: 600;
-  margin: 0;
-  color: var(--color-black);
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease;
-  margin-bottom: 80px;
-}
-
-.container02 {
-  width: 100%;
-  margin: 0 auto;
-}
-
-.services-layout {
-  align-items: start;
-}
-
-.services-column {
-  display: flex;
-  flex-direction: column;
-  border-left: none;
-  border-right: none;
-}
-
-.service-item {
-  padding: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  background: transparent;
-  overflow: hidden;
-}
-
-.service-item:hover {
-  color: black;
-}
-
-.service-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-
-.service-left {
-  display: flex;
-  align-items: center;
-}
-
-.service-number {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #999;
-  transition: color 0.3s ease;
-}
-
-.service-item:hover .service-number {
-  color: #666;
-}
-
-.service-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.service-title {
-  font-size: 2.6rem;
-  font-weight: 600;
-  margin: 0;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease;
-}
-
-.service-arrow {
-  font-size: 1.2rem;
-  font-weight: 600;
-  transition: transform 0.3s ease;
-}
-
-.service-item:hover .service-arrow {
-  transform: translate(5px, -5px);
-}
-
-.hover-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 0;
-  background: white;
-  transition: height 0.3s ease;
-  z-index: 1;
-}
-
-.service-item:hover .hover-overlay {
-  height: 100%;
-}
-
-.image-column {
-  position: relative;
-  height: 400px;
-  overflow: visible;
-}
-
-.hover-image-container {
-  position: fixed;
-  width: 320px;
-  height: 240px;
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.hover-image-container.active {
-  opacity: 1;
-}
-
-.hover-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: transform 0.1s ease;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .services-layout {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  
-  .service-item {
-    padding: 20px;
-  }
-  
-  .service-title {
-    font-size: 1.5rem;
-  }
-  
-  .service-arrow {
-    font-size: 1rem;
-  }
-  
-  .image-column {
-    height: 300px;
-  }
-  
-  .hover-image-container {
-    width: 240px;
-    height: 180px;
-  }
-}
-
-@media (max-width: 480px) {
-  .our-services {
-    padding: 60px 20px;
-  }
-  
-  .service-item {
-    padding: 15px;
-  }
-  
-  .service-title {
-    font-size: 1.3rem;
-  }
-  
-  .service-arrow {
-    font-size: 0.9rem;
-  }
-  
-  .hover-image-container {
-    width: 200px;
-    height: 150px;
-  }
-}
+@import './OurServices.css';
 </style> 
